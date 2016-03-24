@@ -1,0 +1,64 @@
+
+(* This file is included in ocp-lldb/build.ocp and one-lines/build.ocp
+to compile each project.
+
+A project is defined by:
+  project_name = "ocp-lldb-some-project"
+  project_files = [ list of source files ]
+  project_requires = []
+  project_linkflags = []
+  if include "../build-project.ocpinc" then {} else {}
+*)
+
+if has_ledit then {
+  lib_ledit = [ "-ledit" ]
+} else {
+  lib_ledit = []
+}
+
+
+begin objects project_name
+    enabled = has_lldb
+    files = project_files
+    requires = [ project_requires "ocplib-lldb" ]
+
+    project_dst_dir = %string(
+                    strings = [ "%{" project_name "_FULL_DST_DIR}%" ])
+
+    ocp_lldb_object = %path( path = [ project_dst_dir
+      %string( strings = [ project_name ".o"]) ])
+    ocp_lldb =  %path( path = [ project_dst_dir
+               %string( strings = [project_name ".asm"]) ])
+    ocplib_lldb_cmxa = %path( path = [
+        "%{ocplib-lldb_FULL_DST_DIR}%"
+          "ocplib-lldb.cmxa" ])
+    stubs_lib =  %path( path = [
+        "%{ocplib-lldb_FULL_DST_DIR}%" "lldbOCaml.a" ])
+    files_cmx = %subst_file( files = files
+        to_file = %path( path = [ project_dst_dir "%{basename}%.cmx" ])
+    )
+    build_rules = [
+      ocp_lldb_object (
+        build_target = true
+        sources = [files_cmx ocplib_lldb_cmxa ]
+          commands = [
+            {
+              ocamlopt "-g" "-output-obj" "-o" ocp_lldb_object
+              project_cmxas ocplib_lldb_cmxa files_cmx
+            }
+          ]
+      )
+        ocp_lldb (
+          build_target = true
+            sources = [ ocp_lldb_object stubs_lib ]
+            commands = [
+              {
+                cxx "-g" "-o" ocp_lldb "-std=c++11" ocp_lldb_object
+                stubs_lib project_libs lib_ledit lib_lldb "%{OCAMLLIB}%/libasmrun.a" "-ldl"
+                project_linkflags
+              }
+            ]
+
+        )
+    ]
+end

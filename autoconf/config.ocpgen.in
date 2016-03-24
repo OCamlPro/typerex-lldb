@@ -1,3 +1,4 @@
+lldb_version= "@PACKAGE_VERSION@"
 
 cxx = "@CXX@"
 ocamllib = "@OCAMLLIB@"

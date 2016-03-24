@@ -18,6 +18,8 @@
 (*  SOFTWARE.                                                             *)
 (**************************************************************************)
 
+version = lldb_version
+
 begin library "ocplib-lldb"
     enabled = has_lldb
 
@@ -66,4 +68,3 @@ begin
   requires = [ string_compat ];
   files = [ "readHH.ml" ]
 end;;
-

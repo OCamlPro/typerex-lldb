@@ -20,3 +20,8 @@ distclean: clean
 view-doc:
 	xdg-open docs/docs-lldb-html/cpp_reference/html/namespacelldb.html &
 
+install:
+	cp _obuild/ocp-lldb/ocp-lldb.asm $(BINDIR)/ocp-lldb
+	cp _obuild/ocp-lldb-gcstats/ocp-lldb-gcstats.asm $(BINDIR)/ocp-lldb-gcstats
+	cp _obuild/ocp-lldb-allocprof/ocp-lldb-allocprof.asm $(BINDIR)/ocp-lldb-allocprof
+	ocp-build install ocplib-lldb
