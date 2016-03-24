@@ -1,0 +1,103 @@
+(**************************************************************************)
+(*                                                                        *)
+(*                              OCamlPro TypeRex                          *)
+(*                                                                        *)
+(*   Copyright OCamlPro 2011-2016. All rights reserved.                   *)
+(*   This file is distributed under the terms of the GPL v3.0             *)
+(*      (GNU Public Licence version 3.0).                                 *)
+(*                                                                        *)
+(*     Contact: <typerex@ocamlpro.com> (http://www.ocamlpro.com/)         *)
+(*                                                                        *)
+(*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       *)
+(*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES       *)
+(*  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND              *)
+(*  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS   *)
+(*  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN    *)
+(*  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN     *)
+(*  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE      *)
+(*  SOFTWARE.                                                             *)
+(**************************************************************************)
+
+if %mem( string = ocaml_version strings = [ "4.01.0+ocp1"  "4.02.1+ocp1" ] )
+then {
+  gnuplots = [ "%{gnuplots_FULL_DST_DIR}%/gnuplots.cmxa" ]
+  has_memprof = true
+} else {
+  gnuplots = [];
+  has_memprof = false;
+}
+
+if ocaml_version < "4.02" then {
+  bytes = [ "%{bytes_FULL_DST_DIR}%/bytes.cmxa" ]
+} else {
+  bytes = [];
+}
+
+  pp = ocp_pp
+  project_name = "ocp-lldb"
+  project_files = [
+    "telnetServer.ml"
+    "LLDBTypes.ml"
+    "LLDBUtils.ml"
+    "LLDBGlobals.ml"
+    "LLDBOCamlDatarepr.ml"
+    "LLDBOCamlGcstats.ml"
+    "LLDBOCamlLocids.ml"
+    "LLDBOCamlCode.ml"
+    "LLDBOCamlValue.ml"
+    "LLDBOCamlHeap.ml"
+    "LLDBOCamlStack.ml"
+    "LLDBOCamlGlobals.ml"
+    "LLDBOCamlCommand.ml"
+    "LLDBLooper.ml"
+    "LLDBMain.ml" ]
+
+  project_requires = [ "lwt.unix" string_compat ]
+
+  project_linkflags = [ "-lpthread" ]
+
+  project_cmxas = [
+   string_compat_cmxas
+   "%{OCAMLLIB}%/compiler-libs/ocamlcommon.cmxa"
+    "%{ocplib-debug_FULL_DST_DIR}%/ocplib-debug.cmxa"
+    gnuplots
+    "%{ocplib-lang_FULL_DST_DIR}%/ocplib-lang.cmxa"
+      (*      '_obuild/ocplib-unix/libmlocplib-unix.a' *)
+    "%{ocplib-unix_FULL_DST_DIR}%/ocplib-unix.cmxa"
+    "%{unix_FULL_DST_DIR}%/unix.cmxa"
+    "%{bigarray_FULL_DST_DIR}%/bigarray.cmxa"
+    "%{lwt_FULL_DST_DIR}%/lwt.cmxa"
+    bytes
+    "%{lwt.unix_FULL_DST_DIR}%/lwt-unix.cmxa"
+    "%{OCAMLLIB}%/compiler-libs/ocamlbytecomp.cmxa"
+    "%{ocplib-system_FULL_DST_DIR}%/ocplib-system.cmxa"
+]
+
+  if has_memprof then {
+    project_requires += [ "ocplib-gcprof" ]
+      project_cmxas += [
+        "%{ocplib-memprof-misc_FULL_DST_DIR}%/ocplib-memprof-misc.cmxa"
+        "%{ocplib-memprof-heapread_FULL_DST_DIR}%/ocplib-memprof-heapread.cmxa"
+        "%{ocplib-memprof-typing-common_FULL_DST_DIR}%/ocplib-memprof-typing-common.cmxa"
+        "%{ocplib-memprof-typing_FULL_DST_DIR}%/ocplib-memprof-typing.cmxa"
+        "%{ocplib-gcprof_FULL_DST_DIR}%/ocplib-gcprof.cmxa"
+      ]
+  } else {
+    project_requires += [ "compiler-libs.common" ]
+  }
+
+
+
+    project_libs =
+  [
+    "%{bigarray_FULL_DST_DIR}%/libbigarray.a"
+          (* Note: because both these libraries define "cst_to_constr", we need
+             to keep these two libraries in this order, so that
+             "cst_to_constr" from "liblwt-unix_stubs.a" (that cannot
+             be cut into smaller pieces) is preferred over the one in
+             "libunix.a" (where it comes in its own module). *)
+      "%{lwt.unix_FULL_DST_DIR}%/liblwt-unix_stubs.a"
+      "%{unix_FULL_DST_DIR}%/libunix.a"
+
+  ]
+    if include "../build-project.ocpinc" then {} else {}

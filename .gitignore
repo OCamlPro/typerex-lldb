@@ -1,0 +1,11 @@
+*.cm?
+*~
+*.a
+*.asm
+*.o
+/config/config.ocpgen
+/_obuild
+/config/Makefile.config
+/autoconf/Makefile.config
+/autoconf/config.ocpgen
+/DEPENDS

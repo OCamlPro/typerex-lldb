@@ -1,0 +1,9 @@
+
+cxx = "@CXX@"
+ocamllib = "@OCAMLLIB@"
+lldb_includes = "@LLVM_INCLUDE@"
+
+lib_lldb = "@LIB_LLDB@"
+has_lldb = @HAS_LLDB@
+
+has_ledit = @HAS_LEDIT@

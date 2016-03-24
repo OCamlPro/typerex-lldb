@@ -1,0 +1,36 @@
+
+CXX:=@CXX@
+CONFIGURE_ARGS=@CONFIGURE_ARGS@
+
+OBUILD_ROOTDIR=@OBUILD_ROOTDIR@
+OBUILD_DSTDIR=@OBUILD_DSTDIR@
+
+ROOTDIR=@ROOTDIR@
+
+# Modify directly these lines with the locations for
+# LLDB include files (in this directory, you should
+# find lldb/API/SBDebugger.h)
+LLVM_INCLUDE:=@LLVM_INCLUDE@
+# We cache a copy of lattest LLDB developments:
+#LLVM_INCLUDE:=$(ROOTDIR)/lldb-linux-amd64-bins/2015-03-06+Debug+Asserts/include
+#LLVM_INCLUDE:=$(HOME)/GIT/llvm.org/llvm/tools/lldb/include/
+
+# -llldb won't work if there is no .so file (only .so.1 on my Debian)
+# We cache a copy of lattest LLDB developments:
+LIB_LLDB:=@LIB_LLDB@
+#LIB_LLDB:=$(ROOTDIR)/lldb-linux-amd64-bins/2015-03-06+Debug+Asserts/liblldb.so
+#LIB_LLDB:=/home/lefessan/GIT/llvm.org/llvm/Debug+Asserts/lib/liblldb.so
+
+DATADIR=@datarootdir@
+BINDIR=@bindir@
+LIBDIR=@libdir@
+MANDIR=@mandir@
+TYPEREXDIR=@datadir@
+VERSION=@PACKAGE_VERSION@
+
+OCAMLVERSION:=@OCAMLVERSION@
+OCAMLLIB:=@OCAMLLIB@
+OCAMLOPT:=@OCAMLOPT@
+OCAMLDEP:=@OCAMLDEP@
+OCAMLBIN:=@OCAMLBIN@
+OCAML_RUNTIME:=$(OCAMLLIB)/libasmrun.a

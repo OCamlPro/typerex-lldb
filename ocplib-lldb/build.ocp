@@ -1,0 +1,69 @@
+(**************************************************************************)
+(*                                                                        *)
+(*                              OCamlPro TypeRex                          *)
+(*                                                                        *)
+(*   Copyright OCamlPro 2011-2016. All rights reserved.                   *)
+(*   This file is distributed under the terms of the GPL v3.0             *)
+(*      (GNU Public Licence version 3.0).                                 *)
+(*                                                                        *)
+(*     Contact: <typerex@ocamlpro.com> (http://www.ocamlpro.com/)         *)
+(*                                                                        *)
+(*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       *)
+(*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES       *)
+(*  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND              *)
+(*  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS   *)
+(*  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN    *)
+(*  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN     *)
+(*  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE      *)
+(*  SOFTWARE.                                                             *)
+(**************************************************************************)
+
+begin library "ocplib-lldb"
+    enabled = has_lldb
+
+    generator_byte = %byte_exe( p = "ocp-lldb-gen")
+
+
+    generated_h = [ "lldbGenerated_ml.h" "lldbClasses_ml.h" "lldbDelete_ml.h"
+                      "lldbIncludes_ml.h" ]
+    generated_ml = [ "LLDBGenerated.ml" ]
+
+
+    files =  [ generated_ml "LLDBEnums.ml" "LLDBOCaml.ml" ]
+    requires = [ "ocp-lldb-gen" "lldb-conf" string_compat ]
+
+
+     stubs_cpp = "lldbOCaml_ml.cpp"
+     stubs_o =  %path( path = [
+      "%{ocplib-lldb_FULL_DST_DIR}%" "lldbOCaml_ml.o" ])
+     stubs_lib =  %path( path = [
+      "%{ocplib-lldb_FULL_DST_DIR}%" "lldbOCaml.a" ])
+
+    build_rules = [
+      [generated_ml generated_h] (
+        uniq_rule = "ocplldb-generation"
+        sources = [ generator_byte ]
+          commands = [
+            { "bash" "-c"
+                %string( strings= [ generator_byte " " lldb_includes "/lldb/API/*.h" ]) }
+          ]
+      )
+     stubs_lib (
+         build_target = true
+         sources = [ generated_h stubs_cpp ]
+         commands = [
+           { cxx "-g" "-c" "-std=c++11" "-I" ocamllib "-I" lldb_includes "-o" stubs_o stubs_cpp }
+           { "ar" "rc" stubs_lib stubs_o }
+         ]
+      )
+    ]
+end;;
+
+begin
+  program "ocp-lldb-gen";
+  enabled = has_lldb;
+  pp = ocp_pp;
+  requires = [ string_compat ];
+  files = [ "readHH.ml" ]
+end;;
+

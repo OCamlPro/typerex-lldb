@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd autoconf
+
+if ! test -e ./configure; then
+    echo ./configure not present in autoconf/: running aclocal and autoconf
+    aclocal
+    autoconf
+fi
+
+./configure $*

@@ -1,0 +1,155 @@
+desc: (none)
+cmd: ./ocamlopt.opt -c graph.ml
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=167951
+mem_heap_B=16
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=168012
+mem_heap_B=32
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=168073
+mem_heap_B=48
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=169646
+mem_heap_B=64
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=170984
+mem_heap_B=16448
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=171056
+mem_heap_B=2117696
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=196813
+mem_heap_B=3137632
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=209410
+mem_heap_B=3154016
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=229983
+mem_heap_B=3186784
+mem_heap_extra_B=72
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3186784 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 3121184 0x89685E: caml_aligned_malloc (misc.c:75)
+  n1: 2101248 0x884D1E: caml_set_minor_heap_size (minor_gc.c:89)
+   n1: 2101248 0x88F9F9: caml_init_gc (gc_ctrl.c:488)
+    n1: 2101248 0x896190: caml_main (startup.c:187)
+     n0: 2101248 0x882359: main (main.c:54)
+  n1: 1019936 0x8853C5: caml_alloc_for_heap (memory.c:231)
+   n1: 1019936 0x88458B: caml_init_major_heap (major_gc.c:518)
+    n1: 1019936 0x88FA43: caml_init_gc (gc_ctrl.c:492)
+     n1: 1019936 0x896190: caml_main (startup.c:187)
+      n0: 1019936 0x882359: main (main.c:54)
+ n0: 32832 in 3 places, all below massif's threshold (01.00%)
+ n1: 32768 0x885067: caml_page_table_modify (memory.c:113)
+  n1: 32768 0x88531B: caml_page_table_add (memory.c:204)
+   n1: 32768 0x89620E: caml_main (startup.c:66)
+    n0: 32768 0x882359: main (main.c:54)
+#-----------
+snapshot=10
+#-----------
+time=251627
+mem_heap_B=3186784
+mem_heap_extra_B=72
+mem_stacks_B=0
+heap_tree=peak
+n3: 3186784 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 3121184 0x89685E: caml_aligned_malloc (misc.c:75)
+  n1: 2101248 0x884D1E: caml_set_minor_heap_size (minor_gc.c:89)
+   n1: 2101248 0x88F9F9: caml_init_gc (gc_ctrl.c:488)
+    n1: 2101248 0x896190: caml_main (startup.c:187)
+     n0: 2101248 0x882359: main (main.c:54)
+  n1: 1019936 0x8853C5: caml_alloc_for_heap (memory.c:231)
+   n1: 1019936 0x88458B: caml_init_major_heap (major_gc.c:518)
+    n1: 1019936 0x88FA43: caml_init_gc (gc_ctrl.c:492)
+     n1: 1019936 0x896190: caml_main (startup.c:187)
+      n0: 1019936 0x882359: main (main.c:54)
+ n0: 32832 in 3 places, all below massif's threshold (01.00%)
+ n1: 32768 0x885067: caml_page_table_modify (memory.c:113)
+  n1: 32768 0x88531B: caml_page_table_add (memory.c:204)
+   n1: 32768 0x89620E: caml_main (startup.c:66)
+    n0: 32768 0x882359: main (main.c:54)
+#-----------
+snapshot=11
+#-----------
+time=251627
+mem_heap_B=3170400
+mem_heap_extra_B=64
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=302509
+mem_heap_B=3170440
+mem_heap_extra_B=80
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=302572
+mem_heap_B=3170504
+mem_heap_extra_B=88
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=311444
+mem_heap_B=3170538
+mem_heap_extra_B=110
+mem_stacks_B=0
+heap_tree=empty

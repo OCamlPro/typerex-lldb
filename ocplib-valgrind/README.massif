@@ -1,0 +1,22 @@
+A short report on Massif, the valgrind memory profiler
+======================================================
+
+Massif is a recent tool for valgrind:
+
+$ valgrind --tool=massif --time-unit=B CMDLINE
+
+that generates 'massif.out.PID' files. They can be viewed using
+`ms_print`:
+
+$ ms_print massif.out.3344
+
+At the beginning, a snapshot is taken at every
+allocation/desallocation (malloc/free). Then, it takes snapshots less
+frequently, and starts forgetting former snapshots to keep only 100
+snapshots max.
+
+Every 10th snapshot is "detailed", whereas the other ones are
+not. Also, the peak snapshot is detailled. A peak is taken at the
+desallocation following the greatest heap.
+During a detailed snapshot, all callstacks are saved, and printed.
+
