@@ -417,7 +417,13 @@ and print_decl_value c indent h zone addr types ty env path ty_list =
            | _ -> assert false end
        | None -> decl.type_params
      in
-     begin
+     let printed_args =
+#if OCAML_VERSION >= "4.03"
+      match constr_args with
+      | Cstr_record lbl_list ->
+        print_record c indent  h zone addr env ty decl path ty_list lbl_list
+      | Cstr_tuple constr_args ->
+#endif
        match
          try `Value (List.map
                        (function ty ->
@@ -438,12 +444,22 @@ and print_decl_value c indent h zone addr types ty env path ty_list =
                 "WARNING(%s size %d <> block size %d)" constr_name
                 len h.wosize)
          else
-           (indent, Printf.sprintf "<%s>" constr_name,
-            string_of_type_expr env ty) ::
              (print_tuple constr_name env ty_args c indent addr 0 h.wosize)
-     end
+     in
+     (indent, Printf.sprintf "<%s>" constr_name,
+      string_of_type_expr env ty) :: printed_args
+
 
    | Type_record(lbl_list, rep) ->
+     print_record c indent  h zone addr env ty decl path ty_list lbl_list
+
+#if OCAML_VERSION < "4.02"
+#else
+   | Type_open ->
+     debug_path (print_typed_value c indent h zone addr types) "Type_open"
+#endif
+
+and print_record c indent  h zone addr env ty decl path ty_list lbl_list =
 
      let fields = List.mapi (fun pos lbl ->
        let (lbl_name, lbl_arg) = label_name_arg lbl
@@ -483,11 +499,6 @@ and print_decl_value c indent h zone addr types ty env path ty_list =
              fields)) @
        [ indent, "}", "" ]
 
-#if OCAML_VERSION < "4.02"
-#else
-   | Type_open ->
-     debug_path (print_typed_value c indent h zone addr types) "Type_open"
-#endif
 
  and print_list_value c indent env ty addr i =
      if i = 5 then
