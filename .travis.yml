@@ -1,0 +1,43 @@
+language: c
+sudo: false
+addons:
+  apt:
+    sources:
+    - avsm
+    - llvm-toolchain-precise
+    - llvm-toolchain-precise-3.5
+    - llvm-toolchain-precise-3.6
+    - llvm-toolchain-precise-3.7
+    - llvm-toolchain-precise-3.8
+    - ubuntu-toolchain-r-test
+    packages:
+    - libconfig++8-dev
+    - gcc-4.9
+    - g++-4.9
+    - gcc-4.9-multilib
+    - g++-4.9-multilib
+    - gcc-multilib
+    - g++-multilib
+    - lldb-3.6
+    - lldb-3.6-dev
+    - liblldb-3.6
+    - liblldb-3.6-dev
+    - ocaml
+    - opam
+    - ocaml-native-compilers
+install: sh -ex .travis-install.sh
+cache:
+  directories:
+  - ${HOME}/.opam
+script: sh -ex .travis-ci.sh
+matrix:
+  include:
+  - env: OCAML_VERSION=system LLVM_VERSION=3.6
+  - env: OCAML_VERSION=4.01.0 LLVM_VERSION=3.6
+  - env: OCAML_VERSION=4.02.3 LLVM_VERSION=3.6
+  - env: OCAML_VERSION=4.03.0 LLVM_VERSION=3.6
+  - env: OCAML_VERSION=4.01.0 LLVM_VERSION=3.7
+  - env: OCAML_VERSION=4.01.0 LLVM_VERSION=3.8
+  allow_failures:
+  - env: OCAML_VERSION=system LLVM_VERSION=3.6
+  - env: OCAML_VERSION=4.02.3 LLVM_VERSION=3.6
