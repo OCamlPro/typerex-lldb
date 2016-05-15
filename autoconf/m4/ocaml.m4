@@ -77,7 +77,6 @@ AC_DEFUN([AC_PROG_OCAML],
   AC_CHECK_TOOL([OCAML],[ocaml],[no])
 
   # checking for ocamldep
-  AC_CHECK_TOOL([OCAMLDEP],[ocamldep.opt],[no])
   AC_CHECK_TOOL([OCAMLDEP],[ocamldep],[no])
 
   # checking for ocamlmktop
